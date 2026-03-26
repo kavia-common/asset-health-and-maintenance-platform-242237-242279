@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-import { buildFileUrl, getAsset, getTimeline } from "@/lib/client";
+import { getAsset, getTimeline } from "@/lib/client";
 
 function eventBadge(eventType: string): string {
   if (eventType.includes("inspection")) return "bg-slate-50 text-slate-700 ring-slate-200";
