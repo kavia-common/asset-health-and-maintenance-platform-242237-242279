@@ -1,13 +1,26 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-import { getAsset, getTimeline } from "@/lib/client";
+import { getAsset, getTimeline, listAssets } from "@/lib/client";
 
 function eventBadge(eventType: string): string {
   if (eventType.includes("inspection")) return "bg-slate-50 text-slate-700 ring-slate-200";
   if (eventType.includes("alert")) return "bg-red-50 text-red-700 ring-red-200";
   if (eventType.includes("work_order")) return "bg-blue-50 text-blue-700 ring-blue-200";
   return "bg-slate-50 text-slate-700 ring-slate-200";
+}
+
+// PUBLIC_INTERFACE
+export async function generateStaticParams(): Promise<Array<{ id: string }>> {
+  /** Required for `output: "export"`: pre-generate asset detail routes. */
+  try {
+    const assets = await listAssets();
+    return assets.map((a) => ({ id: String(a.id) }));
+  } catch {
+    // If the backend is unavailable at build-time, export will still succeed,
+    // but no dynamic asset pages will be pre-rendered.
+    return [];
+  }
 }
 
 export default async function AssetDetailsPage({
