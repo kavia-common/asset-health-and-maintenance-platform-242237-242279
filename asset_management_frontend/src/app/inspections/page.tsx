@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
@@ -80,9 +81,14 @@ export default function InspectionsPage() {
         <header className="flex flex-wrap items-start justify-between gap-4">
           <div>
             <h1 className="text-2xl font-semibold">Log Inspection</h1>
-            <p className="mt-1 text-sm text-slate-600">Real backend: multipart POST /inspections (optional photo).</p>
+            <p className="mt-1 text-sm text-slate-600">
+              Real backend: multipart POST /inspections (optional photo).
+            </p>
           </div>
-          <Link className="rounded-lg border border-slate-200 px-3 py-2 text-sm hover:bg-slate-50" href="/">
+          <Link
+            className="rounded-lg border border-slate-200 px-3 py-2 text-sm hover:bg-slate-50"
+            href="/"
+          >
             ← Dashboard
           </Link>
         </header>
@@ -94,10 +100,14 @@ export default function InspectionsPage() {
               <select
                 className="rounded-lg border border-slate-200 px-3 py-2"
                 value={assetId}
-                onChange={(ev) => setAssetId(ev.target.value ? Number(ev.target.value) : "")}
+                onChange={(ev) =>
+                  setAssetId(ev.target.value ? Number(ev.target.value) : "")
+                }
                 disabled={loadingAssets}
               >
-                <option value="">{loadingAssets ? "Loading assets..." : "Select an asset"}</option>
+                <option value="">
+                  {loadingAssets ? "Loading assets..." : "Select an asset"}
+                </option>
                 {assets.map((a) => (
                   <option key={a.id} value={a.id}>
                     {a.asset_tag} — {a.name}
@@ -137,12 +147,19 @@ export default function InspectionsPage() {
                 onChange={(ev) => setPhoto(ev.target.files?.item(0) ?? null)}
               />
               <span className="text-xs text-slate-500">
-                Photos are stored server-side and served via <code className="rounded bg-slate-50 px-1">GET /files/&lt;photo_path&gt;</code>.
+                Photos are stored server-side and served via{" "}
+                <code className="rounded bg-slate-50 px-1">
+                  GET /files/&lt;photo_path&gt;
+                </code>
+                .
               </span>
             </label>
 
             {error ? (
-              <div className="rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-800" role="alert">
+              <div
+                className="rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-800"
+                role="alert"
+              >
                 {error}
               </div>
             ) : null}
@@ -170,14 +187,19 @@ export default function InspectionsPage() {
             {result.photo_path ? (
               <div className="mt-4">
                 <div className="text-sm font-medium">Photo preview</div>
-                {/* Use <img> for simplicity; in a production Next.js app you might use next/image with remotePatterns. */}
-                <img
+                <Image
                   className="mt-2 max-h-80 rounded-lg border border-slate-200 object-contain"
                   src={buildFileUrl(result.photo_path)}
                   alt="Inspection upload"
+                  width={960}
+                  height={640}
+                  unoptimized
                 />
                 <div className="mt-2 text-xs text-slate-500">
-                  Stored as: <code className="rounded bg-slate-50 px-1">{result.photo_path}</code>
+                  Stored as:{" "}
+                  <code className="rounded bg-slate-50 px-1">
+                    {result.photo_path}
+                  </code>
                 </div>
               </div>
             ) : (
